@@ -12,6 +12,9 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  public getImgs() {
+    return this.http.get('https://res.cloudinary.com/fleurslesale/image/fetch');
+  }
 
   public getUsers() {
     return this.http.get<User[]>(Properties.server + '/users/getUsers');

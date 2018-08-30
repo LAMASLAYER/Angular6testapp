@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import {UserService} from "../services/userService";
-import {User} from "../models/user";
-import {Router} from "@angular/router";
+import {UserService} from '../services/userService';
+import {User} from '../models/user';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dash',
@@ -16,10 +16,10 @@ export class DashComponent implements OnInit{
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
+          { title: 'Card 1', cols: 1, rows: 1, content: 'Content1' },
+          { title: 'Card 2', cols: 1, rows: 1, content: 'Content2' },
+          { title: 'Card 3', cols: 1, rows: 1, content: 'Content3' },
+          { title: 'Card 4', cols: 1, rows: 1, content: 'Content4' }
         ];
       }
 
@@ -45,21 +45,27 @@ export class DashComponent implements OnInit{
     this.user.credentials = 0;
     this.userService.createUser(this.user)
       .subscribe( data => {
-        alert("User created successfully.");
+        alert('User created successfully.');
       });
 
-  };
+  }
+
   public click() {
     this.user.username = 'post';
     this.user.password = 'post';
     this.user.creation_date = new Date();
     this.user.credentials = 0;
     console.log(this.user);
-    this.userService.createUser(this.user).subscribe()
+    this.userService.createUser(this.user).subscribe();
   }
 
   ngOnInit() {
     this.userService.getUsers().subscribe(
+      res => {
+        console.log(res);
+      }
+    );
+    this.userService.getImgs().subscribe(
       res => {
         console.log(res);
       }

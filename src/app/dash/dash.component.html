@@ -6,7 +6,6 @@
         <mat-card-header>
           <mat-card-title>
             {{card.title}}
-            <button (click)="createUser()">Click !!</button>
             <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
@@ -17,7 +16,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
+          <div>{{card.content}}</div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

@@ -19,3 +19,7 @@
 .dashboard-card-content {
   text-align: center;
 }
+
+mat-grid-tile:nth-child(1) mat-card {
+ background-image: url("http://mulan.info/wp-content/uploads/2018/07/change-nature-quotes-flowers-thoughts-words-1080p-wallpaper-beautiful-beautiful-flowers-of-change-nature-quotes-flowers-thoughts-words-1080p-wallpaper.jpg");
+}

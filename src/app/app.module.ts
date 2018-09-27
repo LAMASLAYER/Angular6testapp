@@ -14,27 +14,21 @@ import {MatGridListModule,
 import { LayoutModule } from '@angular/cdk/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashComponent } from './dash/dash.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {UserService} from './services/userService';
 import {RouterModule, Routes} from '@angular/router';
-import { CloudinaryModule } from '@cloudinary/angular-5.x';
-import * as  Cloudinary from 'cloudinary-core';
-import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { FileUploadModule} from 'ng2-file-upload';
+import {FormsModule} from '@angular/forms';
 
 
 const routes: Routes = [
   { path: 'dash', component: DashComponent },
-  { path: 'upload', component: PhotoUploadComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     DashComponent,
-    NavbarComponent,
-    PhotoUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -51,8 +45,8 @@ const routes: Routes = [
     MatListModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    CloudinaryModule.forRoot(Cloudinary, { cloud_name: 'fleurslesale', upload_preset: 'canh3gtz'}),
-    FileUploadModule
+    FileUploadModule,
+    FormsModule
   ],
   providers: [
     UserService

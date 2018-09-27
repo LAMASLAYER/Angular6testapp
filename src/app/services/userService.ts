@@ -1,6 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {User} from '../models/user';
+import {Player} from '../models/player';
 import {Properties} from '../utils/properties';
 
 const httpOptions = {
@@ -12,20 +12,26 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  public getImgs() {
-    return this.http.get('https://res.cloudinary.com/fleurslesale/image/fetch');
+
+  public getChar(id) {
+    return this.http.get(Properties.server + '/characters/player_id/' + id);
   }
 
-  public getUsers() {
-    return this.http.get<User[]>(Properties.server + '/users/getUsers');
+  public getRaceById(id) {
+    return this.http.get (Properties.server + '/races/race_id/' + id);
   }
 
-  public deleteUser(user) {
-    return this.http.delete(Properties.server + '/' + user.id);
+  public getRaceByName(name) {
+    return this.http.get (Properties.server + '/races/name/' + name);
   }
 
-  public createUser(user) {
-    console.log(user);
-    return this.http.post<User>(Properties.server + '/users/post', user);
+  public getRaces() {
+    return this.http.get (Properties.server + '/races/all');
   }
+
+
+  public getPlayer(id) {
+    return this.http.get (Properties.server + '/players/' + id);
+  }
+
 }

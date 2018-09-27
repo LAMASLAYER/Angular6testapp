@@ -1,24 +1,46 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{card.title}}
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>{{card.content}}</div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+ What character do you want to see ?
+  <select (change)="getName($event.target.value)">
+    <option *ngFor="let c of chars">{{c.name}}</option>
+  </select>
+  <div *ngFor="let c of chars">
+    <button *ngIf="c.name==name" (click)="buildChar(c.charId)">OK</button>
+  </div>
+</div>
+
+<div >
+  <ul *ngFor="let c of c">
+    <li>Joueur: {{c.player}}</li>
+    <li>Nom du personnage: {{c.name}}</li>
+    <li>Race: {{c.race}}</li>
+    <li>Taille: {{c.size}}</li>
+    <li>Niveau Global: {{c.level}}</li>
+    <li>Age: {{c.age}}</li>
+    <li>Genre: {{c.gender}}</li>
+    <li>Dieu: {{c.deity}}</li>
+    <li>Alignement: {{c.alignment}}</li>
+    <li>Taille: {{c.height}}{{c.heightUnit}}</li>
+    <li>Poids: {{c.weight}}{{c.weightUnit}}</li>
+  </ul>
+</div>
+
+<div class="container">
+  <h1>Nouveau personnage</h1>
+  <form #create="ngForm">
+    <div class="form-group">
+      <label for="name">Nom</label>
+      <input (input)="newChar.name  = $event.target.value" [ngModel]="newChar.name" name="name" type="text" class="form-control" id="name" required>
+    </div>
+    <div class="form-group">
+      <label for="race">Race</label>
+      <select (change)="getRaceName($event.target.value)" id="race" class="form-control">
+        <option (select)="newChar.race  = $event.target.value" *ngFor="let r of races">{{r.name}}</option>
+      </select>
+      <label for="taille">Race</label>
+      <input id="taille" [value]="raceSize" type="text" class="form-control" disabled>
+    </div>
+
+    <button [disabled]="create.invalid" (click)="submit(newChar)" type="submit" class="btn btn-success">Submit</button>
+
+  </form>
 </div>

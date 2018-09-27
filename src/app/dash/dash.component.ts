@@ -1,74 +1,101 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {UserService} from '../services/userService';
-import {User} from '../models/user';
+import {Player} from '../models/player';
 import {Router} from '@angular/router';
-
+import {Character} from '../models/character';
 @Component({
   selector: 'app-dash',
   templateUrl: './dash.component.html',
   styleUrls: ['./dash.component.css'],
 })
-export class DashComponent implements OnInit{
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1, content: 'Content1' },
-          { title: 'Card 2', cols: 1, rows: 1, content: 'Content2' },
-          { title: 'Card 3', cols: 1, rows: 1, content: 'Content3' },
-          { title: 'Card 4', cols: 1, rows: 1, content: 'Content4' }
-        ];
-      }
+export class DashComponent implements OnInit {
 
-      return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
-  );
 
-  private user: User = new User();
+  public chars: Object;
+  public name: string;
+  public character: object;
+  public c: Array<any>;
+  public races: object;
+  public size: string;
+  public raceSize: string;
+  public newChar: Character
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userService: UserService) {
-
+  constructor(private router: Router, private userService: UserService) {
   }
 
-  createUser(): void {
-    this.user.username = 'autoincrementtest';
-    this.user.password = 'autoincrementtest';
-    this.user.creation_date = new Date();
-    this.user.credentials = 0;
-    this.userService.createUser(this.user)
-      .subscribe( data => {
-        alert('User created successfully.');
-      });
-
-  }
-
-  public click() {
-    this.user.username = 'post';
-    this.user.password = 'post';
-    this.user.creation_date = new Date();
-    this.user.credentials = 0;
-    console.log(this.user);
-    this.userService.createUser(this.user).subscribe();
-  }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe(
-      res => {
-        console.log(res);
+    this.userService.getChar(1).subscribe(
+      data => {
+        this.chars = data;
+        console.log(data);
+        this.name = this.chars[0].name;
       }
     );
-    this.userService.getImgs().subscribe(
-      res => {
-        console.log(res);
+    this.userService.getRaces().subscribe(
+      races => {
+        this.races = races;
       }
-    )
+    );
+    this.raceSize = 'M';
+    this.newChar = new Character();
+    this.newChar['size'] = this.raceSize;
+    this.newChar['race'] = 'Humain';
   }
+
+  public buildChar(charId: number) {
+    charId = charId - 1;
+    this.character = new Object();
+    this.c = [];
+    this.character['name'] = this.chars[charId]['name'];
+    this.character['age'] = this.chars[charId]['age'];
+    this.character['alignment'] = this.chars[charId]['alignment'];
+    this.character['charId'] = this.chars[charId]['charId'];
+    this.character['creationDate'] = this.chars[charId]['creationDate'];
+    this.character['deity'] = this.chars[charId]['deity'];
+    if (this.character['deity'] == null) {
+      this.character['deity'] = '/';
+    }
+    this.character['gender'] = this.chars[charId]['gender'];
+    this.character['level'] = this.chars[charId]['level'];
+    this.character['height'] = this.chars[charId]['height'];
+    this.character['heightUnit'] = this.chars[charId]['heightUnit'];
+    this.character['weight'] = this.chars[charId]['weight'];
+    this.character['weightUnit'] = this.chars[charId]['weightUnit'];
+    this.userService.getRaceById(this.chars[charId]['raceId']).subscribe(
+      race => {
+        this.character['race'] = race['name'];
+        this.character['size'] = race['size'];
+      }
+    );
+    this.userService.getPlayer(this.chars[charId]['playerId']).subscribe(
+      player => {
+        this.character['player'] = player['name'];
+      }
+    );
+    this.c.push(this.character);
+    console.log(this.c);
+    console.log(this.character);
+  }
+
+  public getName(name): void {
+    this.name = name;
+  }
+
+  public getRaceName(raceName): void {
+    this.setSize(raceName);
+  }
+
+  public setSize(raceName) {
+    this.userService.getRaceByName(raceName).subscribe(
+      race => {
+        this.raceSize = race['size'];
+      }
+    );
+  }
+
+  public submit(newChar: Character) {
+    console.log(newChar);
+  }
+
 }

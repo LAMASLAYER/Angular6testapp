@@ -62,6 +62,7 @@ export class DashComponent implements OnInit {
     this.character['heightUnit'] = this.chars[charId]['heightUnit'];
     this.character['weight'] = this.chars[charId]['weight'];
     this.character['weightUnit'] = this.chars[charId]['weightUnit'];
+    this.character['creationDate'] = this.chars[charId]['creationDate'];
     this.userService.getRaceById(this.chars[charId]['raceId']).subscribe(
       race => {
         this.character['race'] = race['name'];
